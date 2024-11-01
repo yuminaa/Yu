@@ -29,15 +29,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: recursive  # Important for getting Google Test submodule
+          submodules: recursive
 
-      # If Google Test isn't a submodule, fetch it explicitly
-      - name: Fetch Google Test
-        if: ${{ !hashFiles('vendor/googletest/**') }}
+      # Install dependencies first
+      - name: Install Dependencies
         run: |
-          git clone https://github.com/google/googletest.git vendor/googletest
-          cd vendor/googletest
-          git checkout v1.15.2
+          brew update
+          brew install ccache
+          brew install llvm
+          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
 
       - name: Cache ccache directory
         uses: actions/cache@v4
@@ -47,28 +47,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-${{ matrix.compiler }}-${{ matrix.build_type }}-ccache-
 
-      - name: Cache Clang
-        uses: actions/cache@v4
-        with:
-          path: /usr/local/clang
-          key: ${{ runner.os }}-clang-${{ hashFiles('**/clang-version.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-clang-
-
-      - name: Configure Compiler
-        run: |
-          if [ "${{ matrix.compiler }}" = "clang" ]; then
-            if [ "${{ runner.os }}" = "macOS" ]; then
-              echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
-              echo "CXX=/opt/homebrew/opt/llvm/bin/clang++" >> $GITHUB_ENV
-              echo "CXXFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-              echo "LDFLAGS=-stdlib=libc++" >> $GITHUB_ENV
-            else
-              echo "CC=clang-15" >> $GITHUB_ENV
-              echo "CXX=clang++-15" >> $GITHUB_ENV
-            fi
-          fi
-
       - name: Create Build Directory
         run: cmake -E make_directory ${{ github.workspace }}/build
 
@@ -77,6 +55,8 @@ jobs:
         run: |
           cmake .. \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
+            -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install \
@@ -89,7 +69,6 @@ jobs:
       - name: Run Tests
         working-directory: ${{ github.workspace }}/build
         run: |
-          # Run tests with verbose output on failure
           export GTEST_COLOR=yes
           ctest --output-on-failure -C ${{ matrix.build_type }} --verbose
 

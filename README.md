@@ -1,6 +1,6 @@
 # Yu Programming Language
 
-Yu is a performant, statically typed, compiled programming language designed for data-oriented programming while maintaining familiar OOP-like syntax. It emphasizes data layout, cache coherency, and efficient memory patterns while providing a comfortable, modern programming interface.
+Yu is a statically typed, compiled programming language designed for data-oriented programming while maintaining familiar OOP-like syntax. It emphasizes data layout, cache coherency, and efficient memory patterns while providing a comfortable, modern programming interface.
 
 ## Features
 
@@ -13,7 +13,7 @@ Yu is a performant, statically typed, compiled programming language designed for
 - **Generic Programming**: Full support for generic types and functions
 - **Module System**: Simple and intuitive import system
 
-## Core Philosophy
+## Philosophy
 
 Yu uses class-like syntax as a familiar interface for defining data structures and their associated operations, but internally treats data and behavior separately. This approach:
 
