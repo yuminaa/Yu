@@ -78,14 +78,9 @@ class SimdFriendly
 }
 ```
 
-### Data Organization
-- Encourages organizing data by usage patterns
-- Supports array-of-structures (AoS) and structure-of-arrays (SoA) patterns
-- Facilitates cache-friendly data access patterns
-
 # Roadmap
 
-- [ ] Lexer
+- [X] Lexer
 - [ ] Parser
 - [ ] Semantic Analysis
 - [ ] Code Generation
