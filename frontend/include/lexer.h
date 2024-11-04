@@ -1,3 +1,6 @@
+// This file is part of the Yu programming language and is licensed under MIT License;
+// See LICENSE.txt for details
+
 #ifndef YU_LEXER_H
 #define YU_LEXER_H
 
@@ -9,6 +12,21 @@
 
 namespace yu::frontend
 {
+
+    enum class generic_i : uint8_t
+    {
+         NONE,           // Not in template context
+         IDENTIFIER,// Just saw an identifier, might start template
+         TEMPLATE,     // Inside template parameters
+         DONE            // Finished template, back to normal
+    };
+
+     struct template_ctx
+    {
+         generic_i state = generic_i::NONE;
+         uint32_t angle_depth = 0;
+    };
+
     /**
      * @brief The lexer class.
      */
@@ -19,6 +37,7 @@ namespace yu::frontend
         uint32_t current_pos{};
         uint32_t src_length{};
         std::vector<uint32_t> line_starts;
+        template_ctx template_state{};
         ALWAYS_INLINE HOT_FUNCTION void prefetch_next() const;
     };
 
@@ -71,7 +90,7 @@ namespace yu::frontend
      * @param token The token.
      * @return std::pair<uint32_t, uint32_t> The line and column.
      */
-     ALWAYS_INLINE HOT_FUNCTION std::pair<uint32_t, uint32_t> get_line_col(const Lexer& lexer, const lang::token_t& token);
+     HOT_FUNCTION std::pair<uint32_t, uint32_t> get_line_col(const Lexer& lexer, const lang::token_t& token);
 
     /**
      * @brief Get the string value of a token.
@@ -79,7 +98,7 @@ namespace yu::frontend
      * @param token The token.
      * @return std::string_view The string value of the token.
      */
-     ALWAYS_INLINE HOT_FUNCTION std::string_view get_token_value(const Lexer& lexer, const lang::token_t& token);
+     HOT_FUNCTION std::string_view get_token_value(const Lexer& lexer, const lang::token_t& token);
 
     /**
      * @brief Checks if the token is a keyword or an identifier or a type.

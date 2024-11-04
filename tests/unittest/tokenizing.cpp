@@ -1,3 +1,6 @@
+// This file is part of the Yu programming language and is licensed under MIT License;
+// See LICENSE.txt for details
+
 #include <cassert>
 #include <gtest/gtest.h>
 #include "../../frontend/include/lexer.h"
@@ -9,12 +12,6 @@ TEST(lexer, variable)
     const auto tokens = tokenize(lexer);
 
     ASSERT_EQ(tokens->types.size(), 6);
-
-    std::cout << "Token types: ";
-    for (const auto& type : tokens->types)
-        std::cout << static_cast<int>(type) << static_cast<std::string>(" ");
-    std::cout << std::endl;
-
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::VAR);
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::IDENTIFIER);
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::EQUAL);
@@ -226,14 +223,36 @@ TEST(lexer, operator_spacing)
     yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
     const auto tokens = tokenize(lexer);
 
-    ASSERT_EQ(tokens->types.size(), 8);
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::IDENTIFIER);     // a
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::PLUS_EQUAL);     // +=
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::IDENTIFIER);     // b
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], yu::lang::token_i::LEFT_SHIFT_EQUAL); // <<=
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(4)], yu::lang::token_i::IDENTIFIER);     // c
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(5)], yu::lang::token_i::RIGHT_SHIFT);    // >>
-    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(6)], yu::lang::token_i::IDENTIFIER);     // d
+    // Expected sequence:
+    // IDENTIFIER(a) PLUS_EQUAL IDENTIFIER(b) LEFT_SHIFT_EQUAL IDENTIFIER(c) RIGHT_SHIFT IDENTIFIER(d) EOF
+    const std::vector expected = {
+        yu::lang::token_i::IDENTIFIER,     // a
+        yu::lang::token_i::PLUS_EQUAL,     // +=
+        yu::lang::token_i::IDENTIFIER,     // b
+        yu::lang::token_i::LEFT_SHIFT_EQUAL, // <<=
+        yu::lang::token_i::IDENTIFIER,     // c
+        yu::lang::token_i::GREATER,    // >
+        yu::lang::token_i::GREATER,    // >
+        yu::lang::token_i::IDENTIFIER,     // d
+        yu::lang::token_i::END_OF_FILE     // EOF
+    };
+
+    for (size_t i = 0; i < expected.size(); ++i)
+    {
+        ASSERT_LT(i, tokens->types.size()) << "Missing token at position " << i;
+        EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(i)], expected[static_cast<std::vector<yu::lang::token_i>::size_type>(i)])
+            << "Token mismatch at position " << i
+            << "\nExpected: " << static_cast<int>(expected[static_cast<std::vector<yu::lang::token_i>::size_type>(i)])
+            << "\nGot: " << static_cast<int>(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(i)])
+            << "\nToken: '" << get_token_value(lexer, {
+                tokens->starts[static_cast<std::vector<yu::lang::token_i>::size_type>(i)],
+                tokens->lengths[static_cast<std::vector<yu::lang::token_i>::size_type>(i)],
+                tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(i)],
+                tokens->flags[static_cast<std::vector<yu::lang::token_i>::size_type>(i)]
+            }) << "'";
+    }
+
+    ASSERT_EQ(tokens->types.size(), expected.size());
 }
 
 TEST(lexer, class_with_attributes)
@@ -336,7 +355,7 @@ TEST(lexer, import_statement)
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(4)], yu::lang::token_i::FROM);
 }
 
-TEST(lexer, smart_pointer)
+TEST(lexer, pointer)
 {
     constexpr std::string_view src = R"(
         var strPtr: Ptr<string> = new Ptr<string>("Test");
@@ -350,6 +369,18 @@ TEST(lexer, smart_pointer)
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::IDENTIFIER); // strPtr
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::COLON);
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], yu::lang::token_i::PTR); // Ptr
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(4)], yu::lang::token_i::LESS); // <
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(5)], yu::lang::token_i::STRING); // string
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(6)], yu::lang::token_i::GREATER); // >
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(7)], yu::lang::token_i::EQUAL);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(8)], yu::lang::token_i::NEW);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(9)], yu::lang::token_i::PTR);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(10)], yu::lang::token_i::LESS);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(11)], yu::lang::token_i::STRING);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(12)], yu::lang::token_i::GREATER);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(13)], yu::lang::token_i::LEFT_PAREN);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(14)], yu::lang::token_i::STR_LITERAL);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(15)], yu::lang::token_i::RIGHT_PAREN);
 }
 
 TEST(lexer, inline_function)
@@ -398,4 +429,110 @@ TEST(lexer, static_function)
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::PUBLIC);
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::STATIC);
     EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::IDENTIFIER); // dot
+}
+
+TEST(lexer, unterminated_string)
+{
+    constexpr std::string_view src = R"(
+        var str = "unterminated
+    )";
+    yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
+    const auto tokens = tokenize(lexer);
+
+    ASSERT_GT(tokens->types.size(), 3);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::VAR);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::IDENTIFIER);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::EQUAL);
+
+    EXPECT_EQ(tokens->flags[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], 1);
+}
+
+TEST(lexer, nested_generic_types)
+{
+    constexpr std::string_view src = R"(
+        var matrix: Array<Array<f32>>;
+    )";
+    yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
+    const auto tokens = tokenize(lexer);
+
+    const std::vector expected = {
+        yu::lang::token_i::VAR,
+        yu::lang::token_i::IDENTIFIER,  // matrix
+        yu::lang::token_i::COLON,
+        yu::lang::token_i::IDENTIFIER,  // Array
+        yu::lang::token_i::LESS,        //
+        yu::lang::token_i::IDENTIFIER,  // Array
+        yu::lang::token_i::LESS,        //
+        yu::lang::token_i::F32,         // f32
+        yu::lang::token_i::GREATER,     // >
+        yu::lang::token_i::GREATER,     // >
+        yu::lang::token_i::SEMICOLON
+    };
+
+    for (size_t i = 0; i < expected.size(); ++i)
+    {
+        ASSERT_LT(i, tokens->types.size()) << "Missing token at position " << i;
+        EXPECT_EQ(tokens->types[static_cast< std::vector<unsigned short>::size_type>(i)], expected[static_cast< std::vector<unsigned short>::size_type>(i)])
+            << "Mismatch at position " << i
+            << " Expected: " << static_cast<int>(expected[static_cast< std::vector<unsigned short>::size_type>(i)])
+            << " Got: " << static_cast<int>(tokens->types[static_cast< std::vector<unsigned short>::size_type>(i)]);
+    }
+}
+
+TEST(lexer, scientific_notation)
+{
+    constexpr std::string_view src = R"(
+        var avogadro = 6.022e23;
+        var planck = 6.626e-34;
+    )";
+    yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
+    const auto tokens = tokenize(lexer);
+
+    ASSERT_GT(tokens->types.size(), 0);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::VAR);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::IDENTIFIER);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::EQUAL);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], yu::lang::token_i::NUM_LITERAL);
+}
+
+TEST(lexer, complex_annotations)
+{
+    constexpr std::string_view src = R"(
+        @deprecated("Use newFunction() instead")
+        @pure
+        @align(16)
+        public function oldFunction() -> void
+    )";
+    yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
+    const auto tokens = tokenize(lexer);
+
+    ASSERT_GT(tokens->types.size(), 0);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(0)], yu::lang::token_i::DEPRECATED_ANNOT);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(1)], yu::lang::token_i::LEFT_PAREN);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(2)], yu::lang::token_i::STR_LITERAL);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], yu::lang::token_i::RIGHT_PAREN);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(4)], yu::lang::token_i::PURE_ANNOT);
+}
+
+TEST(lexer, escaped_characters)
+{
+    constexpr std::string_view src = R"(
+        var str = "Tab:\t Newline:\n Quote:\" Backslash:\\";
+    )";
+    yu::frontend::Lexer lexer = yu::frontend::create_lexer(src);
+    const auto tokens = tokenize(lexer);
+
+    ASSERT_GT(tokens->types.size(), 0);
+    EXPECT_EQ(tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)], yu::lang::token_i::STR_LITERAL);
+
+    auto value = yu::frontend::get_token_value(lexer, {
+        tokens->starts[static_cast<std::vector<yu::lang::token_i>::size_type>(3)],
+        tokens->lengths[static_cast<std::vector<yu::lang::token_i>::size_type>(3)],
+        tokens->types[static_cast<std::vector<yu::lang::token_i>::size_type>(3)],
+        tokens->flags[static_cast<std::vector<yu::lang::token_i>::size_type>(3)]
+    });
+    EXPECT_TRUE(value.find("\\t") != std::string_view::npos);
+    EXPECT_TRUE(value.find("\\n") != std::string_view::npos);
+    EXPECT_TRUE(value.find("\\\"") != std::string_view::npos);
+    EXPECT_TRUE(value.find("\\\\") != std::string_view::npos);
 }
