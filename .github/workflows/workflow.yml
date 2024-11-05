@@ -76,7 +76,7 @@ jobs:
       - name: Generate Coverage Report
         working-directory: ${{ github.workspace }}/build
         run: |
-          lcov --capture --directory . --output-file coverage.info
+          lcov --capture --directory . --output-file coverage.info --ignore-errors inconsistent
           lcov --remove coverage.info '/usr/*' --output-file coverage.info
           lcov --list coverage.info
 
