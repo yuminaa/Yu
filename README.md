@@ -28,7 +28,7 @@ Yu uses class-like syntax as a familiar interface for defining data structures a
 ## Code Example
 
 ```yu
-import { io } from 'system';
+import { io } from 'system'; 
 
 @packed
 @aligned(16)
