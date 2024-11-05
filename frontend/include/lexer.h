@@ -12,7 +12,6 @@
 
 namespace yu::frontend
 {
-
     enum class generic_i : uint8_t
     {
          NONE,           // Not in template context
@@ -21,25 +20,22 @@ namespace yu::frontend
          DONE            // Finished template, back to normal
     };
 
-     struct template_ctx
-    {
-         generic_i state = generic_i::NONE;
-         uint32_t angle_depth = 0;
-    };
-
     /**
      * @brief The lexer class.
      */
-    struct alignas(8) Lexer
-    {
-        const char* src{};
-        lang::TokenList tokens;
-        uint32_t current_pos{};
-        uint32_t src_length{};
-        std::vector<uint32_t> line_starts;
-        template_ctx template_state{};
-        ALWAYS_INLINE HOT_FUNCTION void prefetch_next() const;
-    };
+     struct alignas(64) Lexer
+     {
+          // Hot group - 16 bytes
+          const char* src{};        // 8 bytes
+          uint32_t current_pos{};   // 4 bytes
+          uint32_t src_length{};    // 4 bytes
+
+          // Cold group - separate cache line
+          lang::TokenList tokens;           // vector - 24 bytes
+          std::vector<uint32_t> line_starts;// vector - 24 bytes
+
+          ALWAYS_INLINE HOT_FUNCTION void prefetch_next() const;
+     };
 
     /**
      * @brief Creates a lexer object.
@@ -48,18 +44,6 @@ namespace yu::frontend
      * @throws std::runtime_error if the source file is too large (>4GiB).
      */
      Lexer create_lexer(std::basic_string_view<char> src);
-    /**
-     * @brief Peek the next token without advancing.
-     * @param lexer The lexer object.
-     * @return token_t The next token.
-     */
-     ALWAYS_INLINE HOT_FUNCTION lang::token_t peek_next(const Lexer& lexer);
-
-    /**
-     * @brief Advances the lexer to the next token.
-     * @param lexer The lexer object.
-     */
-     ALWAYS_INLINE HOT_FUNCTION void advance(Lexer& lexer);
 
     /**
      * @brief Returns the next token.
@@ -126,7 +110,7 @@ namespace yu::frontend
        * @param c The character to check.
        * @return token_i The token type.
        */
-       ALWAYS_INLINE HOT_FUNCTION lang::token_i get_token_type(char c);
+       HOT_FUNCTION lang::token_i get_token_type(char c);
 }
 
 #endif

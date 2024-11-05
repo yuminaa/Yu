@@ -1,4 +1,4 @@
-name: yu ci
+name: ci
 
 on:
   push:
@@ -31,13 +31,23 @@ jobs:
         with:
           submodules: recursive
 
-      # Install dependencies first
-      - name: Install Dependencies
+      - name: Cache Homebrew
+        uses: actions/cache@v4
+        with:
+          path: /opt/homebrew
+          key: homebrew-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: |
+            homebrew-${{ runner.os }}-${{ runner.arch }}-
+            homebrew-${{ runner.os }}-
+
+      - name: Install Homebrew Dependencies
         run: |
+          if ! command -v brew &>/dev/null; then
+            echo "Homebrew not found, installing..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
           brew update
-          brew install ccache
-          brew install llvm
-          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          brew install ccache llvm lcov
 
       - name: Cache ccache directory
         uses: actions/cache@v4
@@ -55,12 +65,13 @@ jobs:
         run: |
           cmake .. \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-            -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
-            -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install \
-            -DBUILD_TESTING=ON
+            -DBUILD_TESTING=ON \
+            -DCMAKE_CXX_FLAGS="--coverage"
 
       - name: Build
         working-directory: ${{ github.workspace }}/build
