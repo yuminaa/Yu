@@ -35,7 +35,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ccache llvm lcov
-          echo "/usr/lib/llvm-12/bin" >> $GITHUB_PATH
 
       - name: Cache ccache directory
         uses: actions/cache@v4
@@ -53,8 +52,8 @@ jobs:
         run: |
           cmake .. \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-            -DCMAKE_C_COMPILER=/usr/lib/llvm-12/bin/clang \
-            -DCMAKE_CXX_COMPILER=/usr/lib/llvm-12/bin/clang++ \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install \
