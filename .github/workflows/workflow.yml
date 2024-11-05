@@ -31,13 +31,23 @@ jobs:
         with:
           submodules: recursive
 
-      # Install dependencies first
-      - name: Install Dependencies
+      - name: Cache Homebrew
+        uses: actions/cache@v4
+        with:
+          path: /opt/homebrew
+          key: homebrew-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: |
+            homebrew-${{ runner.os }}-${{ runner.arch }}-
+            homebrew-${{ runner.os }}-
+
+      - name: Install Homebrew Dependencies
         run: |
+          if ! command -v brew &>/dev/null; then
+            echo "Homebrew not found, installing..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
           brew update
-          brew install ccache
-          brew install llvm
-          brew install lcov
+          brew install ccache llvm lcov
 
       - name: Cache ccache directory
         uses: actions/cache@v4
@@ -73,20 +83,6 @@ jobs:
           export GTEST_COLOR=yes
           ctest --output-on-failure -C ${{ matrix.build_type }} --verbose
 
-      - name: Generate Coverage Report
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          lcov --capture --directory . --output-file coverage.info --ignore-errors inconsistent
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
-          lcov --list coverage.info
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4.4.3
-        with:
-          name: coverage-report
-          path: ${{ github.workspace }}/build/coverage.info
-          retention-days: 7
-
       - name: Upload Test Logs
         if: always()
         uses: actions/upload-artifact@v4.4.3
@@ -96,11 +92,3 @@ jobs:
             ${{ github.workspace }}/build/Testing/Temporary/LastTest.log
             ${{ github.workspace }}/build/tests/test_detail.xml
           retention-days: 7
-
-      - name: Report Coverage
-        uses: codecov/codecov-action@v4
-        with:
-          files: ${{ github.workspace }}/build/coverage.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
