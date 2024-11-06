@@ -11,32 +11,32 @@ supports *any* kind of tests, not just unit tests.
 
 So what makes a good test, and how does GoogleTest fit in? We believe:
 
-1.  Tests should be *independent* and *repeatable*. It's a pain to debug a test
-    that succeeds or fails as a result of other tests. GoogleTest isolates the
-    tests by running each of them on a different object. When a test fails,
-    GoogleTest allows you to run it in isolation for quick debugging.
-2.  Tests should be well *organized* and reflect the structure of the tested
-    code. GoogleTest groups related tests into test suites that can share data
-    and subroutines. This common pattern is easy to recognize and makes tests
-    easy to maintain. Such consistency is especially helpful when people switch
-    projects and start to work on a new code base.
-3.  Tests should be *portable* and *reusable*. Google has a lot of code that is
-    platform-neutral; its tests should also be platform-neutral. GoogleTest
-    works on different OSes, with different compilers, with or without
-    exceptions, so GoogleTest tests can work with a variety of configurations.
-4.  When tests fail, they should provide as much *information* about the problem
-    as possible. GoogleTest doesn't stop at the first test failure. Instead, it
-    only stops the current test and continues with the next. You can also set up
-    tests that report non-fatal failures after which the current test continues.
-    Thus, you can detect and fix multiple bugs in a single run-edit-compile
-    cycle.
-5.  The testing framework should liberate test writers from housekeeping chores
-    and let them focus on the test *content*. GoogleTest automatically keeps
-    track of all tests defined, and doesn't require the user to enumerate them
-    in order to run them.
-6.  Tests should be *fast*. With GoogleTest, you can reuse shared resources
-    across tests and pay for the set-up/tear-down only once, without making
-    tests depend on each other.
+1. Tests should be *independent* and *repeatable*. It's a pain to debug a test
+   that succeeds or fails as a result of other tests. GoogleTest isolates the
+   tests by running each of them on a different object. When a test fails,
+   GoogleTest allows you to run it in isolation for quick debugging.
+2. Tests should be well *organized* and reflect the structure of the tested
+   code. GoogleTest groups related tests into test suites that can share data
+   and subroutines. This common pattern is easy to recognize and makes tests
+   easy to maintain. Such consistency is especially helpful when people switch
+   projects and start to work on a new code base.
+3. Tests should be *portable* and *reusable*. Google has a lot of code that is
+   platform-neutral; its tests should also be platform-neutral. GoogleTest
+   works on different OSes, with different compilers, with or without
+   exceptions, so GoogleTest tests can work with a variety of configurations.
+4. When tests fail, they should provide as much *information* about the problem
+   as possible. GoogleTest doesn't stop at the first test failure. Instead, it
+   only stops the current test and continues with the next. You can also set up
+   tests that report non-fatal failures after which the current test continues.
+   Thus, you can detect and fix multiple bugs in a single run-edit-compile
+   cycle.
+5. The testing framework should liberate test writers from housekeeping chores
+   and let them focus on the test *content*. GoogleTest automatically keeps
+   track of all tests defined, and doesn't require the user to enumerate them
+   in order to run them.
+6. Tests should be *fast*. With GoogleTest, you can reuse shared resources
+   across tests and pay for the set-up/tear-down only once, without making
+   tests depend on each other.
 
 Since GoogleTest is based on the popular xUnit architecture, you'll feel right
 at home if you've used JUnit or PyUnit before. If not, it will take you about 10
@@ -67,13 +67,12 @@ deprecated and refactored away.
 
 So please be aware of the different definitions of the terms:
 
-
-Meaning                                                                              | GoogleTest Term         | [ISTQB](https://www.istqb.org/) Term
-:----------------------------------------------------------------------------------- | :---------------------- | :----------------------------------
-Exercise a particular program path with specific input values and verify the results | [TEST()](#simple-tests) | [Test Case][istqb test case]
-
+ Meaning                                                                              | GoogleTest Term         | [ISTQB](https://www.istqb.org/) Term 
+:-------------------------------------------------------------------------------------|:------------------------|:-------------------------------------
+ Exercise a particular program path with specific input values and verify the results | [TEST()](#simple-tests) | [Test Case][istqb test case]         
 
 [istqb test case]: https://glossary.istqb.org/en_US/term/test-case-2
+
 [istqb test suite]: https://glossary.istqb.org/en_US/term/test-suite-1-3
 
 ## Basic Concepts
@@ -146,13 +145,13 @@ provided by GoogleTest, see the [Assertions Reference](reference/assertions.md).
 
 To create a test:
 
-1.  Use the `TEST()` macro to define and name a test function. These are
-    ordinary C++ functions that don't return a value.
-2.  In this function, along with any valid C++ statements you want to include,
-    use the various GoogleTest assertions to check values.
-3.  The test's result is determined by the assertions; if any assertion in the
-    test fails (either fatally or non-fatally), or if the test crashes, the
-    entire test fails. Otherwise, it succeeds.
+1. Use the `TEST()` macro to define and name a test function. These are
+   ordinary C++ functions that don't return a value.
+2. In this function, along with any valid C++ statements you want to include,
+   use the various GoogleTest assertions to check values.
+3. The test's result is determined by the assertions; if any assertion in the
+   test fails (either fatally or non-fatally), or if the test crashes, the
+   entire test fails. Otherwise, it succeeds.
 
 ```c++
 TEST(TestSuiteName, TestName) {
@@ -210,18 +209,18 @@ objects for several different tests.
 
 To create a fixture:
 
-1.  Derive a class from `testing::Test` . Start its body with `protected:`, as
-    we'll want to access fixture members from sub-classes.
-2.  Inside the class, declare any objects you plan to use.
-3.  If necessary, write a default constructor or `SetUp()` function to prepare
-    the objects for each test. A common mistake is to spell `SetUp()` as
-    **`Setup()`** with a small `u` - Use `override` in C++11 to make sure you
-    spelled it correctly.
-4.  If necessary, write a destructor or `TearDown()` function to release any
-    resources you allocated in `SetUp()` . To learn when you should use the
-    constructor/destructor and when you should use `SetUp()/TearDown()`, read
-    the [FAQ](faq.md#CtorVsSetUp).
-5.  If needed, define subroutines for your tests to share.
+1. Derive a class from `testing::Test` . Start its body with `protected:`, as
+   we'll want to access fixture members from sub-classes.
+2. Inside the class, declare any objects you plan to use.
+3. If necessary, write a default constructor or `SetUp()` function to prepare
+   the objects for each test. A common mistake is to spell `SetUp()` as
+   **`Setup()`** with a small `u` - Use `override` in C++11 to make sure you
+   spelled it correctly.
+4. If necessary, write a destructor or `TearDown()` function to release any
+   resources you allocated in `SetUp()` . To learn when you should use the
+   constructor/destructor and when you should use `SetUp()/TearDown()`, read
+   the [FAQ](faq.md#CtorVsSetUp).
+5. If needed, define subroutines for your tests to share.
 
 When using a fixture, use `TEST_F()` instead of `TEST()` as it allows you to
 access objects and subroutines in the test fixture:
@@ -326,11 +325,11 @@ would lead to a segfault when `n` is `NULL`.
 
 When these tests run, the following happens:
 
-1.  GoogleTest constructs a `QueueTest` object (let's call it `t1`).
-2.  The first test (`IsEmptyInitially`) runs on `t1`.
-3.  `t1` is destructed.
-4.  The above steps are repeated on another `QueueTest` object, this time
-    running the `DequeueWorks` test.
+1. GoogleTest constructs a `QueueTest` object (let's call it `t1`).
+2. The first test (`IsEmptyInitially`) runs on `t1`.
+3. `t1` is destructed.
+4. The above steps are repeated on another `QueueTest` object, this time
+   running the `DequeueWorks` test.
 
 **Availability**: Linux, Windows, Mac.
 
@@ -347,21 +346,21 @@ test suites, or even different source files.
 
 When invoked, the `RUN_ALL_TESTS()` macro:
 
-*   Saves the state of all GoogleTest flags.
+* Saves the state of all GoogleTest flags.
 
-*   Creates a test fixture object for the first test.
+* Creates a test fixture object for the first test.
 
-*   Initializes it via `SetUp()`.
+* Initializes it via `SetUp()`.
 
-*   Runs the test on the fixture object.
+* Runs the test on the fixture object.
 
-*   Cleans up the fixture via `TearDown()`.
+* Cleans up the fixture via `TearDown()`.
 
-*   Deletes the fixture.
+* Deletes the fixture.
 
-*   Restores the state of all GoogleTest flags.
+* Restores the state of all GoogleTest flags.
 
-*   Repeats the above steps for the next test, until all tests have run.
+* Repeats the above steps for the next test, until all tests have run.
 
 If a fatal failure happens the subsequent steps will be skipped.
 
@@ -473,10 +472,10 @@ NOTE: `ParseGUnitFlags()` is deprecated in favor of `InitGoogleTest()`.
 
 ## Known Limitations
 
-*   Google Test is designed to be thread-safe. The implementation is thread-safe
-    on systems where the `pthreads` library is available. It is currently
-    *unsafe* to use Google Test assertions from two threads concurrently on
-    other systems (e.g. Windows). In most tests this is not an issue as usually
-    the assertions are done in the main thread. If you want to help, you can
-    volunteer to implement the necessary synchronization primitives in
-    `gtest-port.h` for your platform.
+* Google Test is designed to be thread-safe. The implementation is thread-safe
+  on systems where the `pthreads` library is available. It is currently
+  *unsafe* to use Google Test assertions from two threads concurrently on
+  other systems (e.g. Windows). In most tests this is not an issue as usually
+  the assertions are done in the main thread. If you want to help, you can
+  volunteer to implement the necessary synchronization primitives in
+  `gtest-port.h` for your platform.

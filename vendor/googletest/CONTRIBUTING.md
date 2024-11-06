@@ -8,12 +8,12 @@ couple of legal hurdles.
 Please fill out either the individual or corporate Contributor License Agreement
 (CLA).
 
-*   If you are an individual writing original source code and you're sure you
-    own the intellectual property, then you'll need to sign an
-    [individual CLA](https://developers.google.com/open-source/cla/individual).
-*   If you work for a company that wants to allow you to contribute your work,
-    then you'll need to sign a
-    [corporate CLA](https://developers.google.com/open-source/cla/corporate).
+* If you are an individual writing original source code and you're sure you
+  own the intellectual property, then you'll need to sign an
+  [individual CLA](https://developers.google.com/open-source/cla/individual).
+* If you work for a company that wants to allow you to contribute your work,
+  then you'll need to sign a
+  [corporate CLA](https://developers.google.com/open-source/cla/corporate).
 
 Follow either of the two links above to access the appropriate CLA and
 instructions for how to sign and return it. Once we receive it, we'll be able to
@@ -27,22 +27,22 @@ PR is acceptable as an alternative.
 
 ## Contributing A Patch
 
-1.  Submit an issue describing your proposed change to the
-    [issue tracker](https://github.com/google/googletest/issues).
-2.  Please don't mix more than one logical change per submittal, because it
-    makes the history hard to follow. If you want to make a change that doesn't
-    have a corresponding issue in the issue tracker, please create one.
-3.  Also, coordinate with team members that are listed on the issue in question.
-    This ensures that work isn't being duplicated and communicating your plan
-    early also generally leads to better patches.
-4.  If your proposed change is accepted, and you haven't already done so, sign a
-    Contributor License Agreement
-    ([see details above](#contributor-license-agreements)).
-5.  Fork the desired repo, develop and test your code changes.
-6.  Ensure that your code adheres to the existing style in the sample to which
-    you are contributing.
-7.  Ensure that your code has an appropriate set of unit tests which all pass.
-8.  Submit a pull request.
+1. Submit an issue describing your proposed change to the
+   [issue tracker](https://github.com/google/googletest/issues).
+2. Please don't mix more than one logical change per submittal, because it
+   makes the history hard to follow. If you want to make a change that doesn't
+   have a corresponding issue in the issue tracker, please create one.
+3. Also, coordinate with team members that are listed on the issue in question.
+   This ensures that work isn't being duplicated and communicating your plan
+   early also generally leads to better patches.
+4. If your proposed change is accepted, and you haven't already done so, sign a
+   Contributor License Agreement
+   ([see details above](#contributor-license-agreements)).
+5. Fork the desired repo, develop and test your code changes.
+6. Ensure that your code adheres to the existing style in the sample to which
+   you are contributing.
+7. Ensure that your code has an appropriate set of unit tests which all pass.
+8. Submit a pull request.
 
 ## The Google Test and Google Mock Communities
 
@@ -88,9 +88,9 @@ check your formatting.
 If you plan to contribute a patch, you need to build Google Test, Google Mock,
 and their own tests from a git checkout, which has further requirements:
 
-*   [Python](https://www.python.org/) v3.6 or newer (for running some of the
-    tests and re-generating certain source files from templates)
-*   [CMake](https://cmake.org/) v2.8.12 or newer
+* [Python](https://www.python.org/) v3.6 or newer (for running some of the
+  tests and re-generating certain source files from templates)
+* [CMake](https://cmake.org/) v2.8.12 or newer
 
 ## Developing Google Test and Google Mock
 

@@ -3,9 +3,11 @@
 [![Build Status](https://github.com/yuminaa/yu/actions/workflows/workflow.yml/badge.svg)](https://github.com/yuminaa/yu/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Yu is a statically typed, compiled programming language designed for data-oriented programming while maintaining familiar OOP-like syntax. It emphasizes data layout, cache coherency, and efficient memory patterns while providing a comfortable, modern programming interface.
+Yu is a statically typed, compiled programming language designed for data-oriented programming while maintaining
+familiar OOP-like syntax. It emphasizes data layout, cache coherency, and efficient memory patterns while providing a
+comfortable, modern programming interface.
 
-> [!IMPORTANT] 
+> [!IMPORTANT]
 > The compiler is currently under development and not ready for production use.
 
 ## Features
@@ -21,7 +23,8 @@ Yu is a statically typed, compiled programming language designed for data-orient
 
 ## Philosophy
 
-Yu uses class-like syntax as a familiar interface for defining data structures and their associated operations, but internally treats data and behavior separately. This approach:
+Yu uses class-like syntax as a familiar interface for defining data structures and their associated operations, but
+internally treats data and behavior separately. This approach:
 
 - Prioritizes data layout and memory patterns
 - Encourages thinking about data transformation rather than object behavior
@@ -67,6 +70,7 @@ class Generic<T>
 ## Data-Oriented Features
 
 ### Memory Layout Control
+
 ```yu
 // Explicit control over struct packing
 @packed

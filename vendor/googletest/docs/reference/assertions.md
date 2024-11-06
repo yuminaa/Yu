@@ -536,17 +536,17 @@ process. How that happens depends on the platform and the variable
 `::testing::GTEST_FLAG(death_test_style)`, which is initialized from the
 command-line flag `--gtest_death_test_style`.
 
-*   On POSIX systems, `fork()` (or `clone()` on Linux) is used to spawn the
-    child, after which:
-    *   If the variable's value is `"fast"`, the death test statement is
-        immediately executed.
-    *   If the variable's value is `"threadsafe"`, the child process re-executes
-        the unit test binary just as it was originally invoked, but with some
-        extra flags to cause just the single death test under consideration to
-        be run.
-*   On Windows, the child is spawned using the `CreateProcess()` API, and
-    re-executes the binary to cause just the single death test under
-    consideration to be run - much like the `"threadsafe"` mode on POSIX.
+* On POSIX systems, `fork()` (or `clone()` on Linux) is used to spawn the
+  child, after which:
+    * If the variable's value is `"fast"`, the death test statement is
+      immediately executed.
+    * If the variable's value is `"threadsafe"`, the child process re-executes
+      the unit test binary just as it was originally invoked, but with some
+      extra flags to cause just the single death test under consideration to
+      be run.
+* On Windows, the child is spawned using the `CreateProcess()` API, and
+  re-executes the binary to cause just the single death test under
+  consideration to be run - much like the `"threadsafe"` mode on POSIX.
 
 Other values for the variable are illegal and will cause the death test to fail.
 Currently, the flag's default value is

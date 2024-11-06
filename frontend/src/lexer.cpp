@@ -7,6 +7,11 @@
 
 namespace yu::frontend 
 {
+
+    /** Char type lookup using branchless multiplication for maximum throughput
+     *  Each char maps to a type: whitespace(1), comment(/=2), etc.
+     *  Using multiplication instead of branches improves pipelining
+    */
     static const std::array<uint8_t, 256> char_type = []
     {
         std::array<uint8_t, 256> types{};
@@ -94,6 +99,13 @@ namespace yu::frontend
         return condition ? static_cast<uint8_t>(flag) : 0;
     }
 
+    /** Prefetching strategy for optimal cache utilization
+     *  L1: Next immediate chunk (64 bytes)
+     *  L2: Near-future chunk (256 bytes)
+     *  L3: Far-future chunk (512 bytes)
+     *  This pattern matches typical token parsing flow where we need
+     *  to look ahead for multi-character tokens and comments
+    */
     ALWAYS_INLINE void Lexer::prefetch_next() const
     {
         PREFETCH_L1(src + current_pos + CACHE_LINE_SIZE);
@@ -385,5 +397,10 @@ namespace yu::frontend
     std::string_view get_token_value(const Lexer& lexer, const lang::token_t& token)
     {
         return {lexer.src + token.start, token.length};
+    }
+
+    std::string_view get_token_value(const char* src, const lang::TokenList& tokens, size_t pos)
+    {
+        return {src + tokens.starts[static_cast<std::vector<unsigned>::size_type>(pos)], tokens.lengths[static_cast<std::vector<unsigned>::size_type>(pos)]};
     }
 }
