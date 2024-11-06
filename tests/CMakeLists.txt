@@ -8,6 +8,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/googletest ${CMAKE_BINARY_DIR}/googl
 # Create the test executable
 add_executable(yu-test
         unittest/tokenizing.cpp
+        unittest/parsing.cpp
 )
 
 # Include directories - keeping the essential ones
@@ -18,11 +19,11 @@ target_include_directories(yu-test PRIVATE
 )
 
 # Specify proper link directories for LLVM
-if(APPLE)
+if (APPLE)
     target_link_directories(yu-test PRIVATE
             /opt/homebrew/opt/llvm/lib
     )
-endif()
+endif ()
 
 # Link against libraries - ensure yu-frontend is built before linking
 add_dependencies(yu-test yu-frontend)
@@ -34,12 +35,12 @@ target_link_libraries(yu-test PRIVATE
 )
 
 # For Clang/LLVM on Apple platforms
-if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if (APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(yu-test PRIVATE
             c++
             c++abi
     )
-endif()
+endif ()
 
 # Set C++20 standard
 set_target_properties(yu-test PROPERTIES
