@@ -14,7 +14,7 @@ class TokenPrinter
     static constexpr auto YELLOW = "\033[33m";
     static constexpr auto RESET = "\033[0m";
 
-    static std::string get_token_name(token_i type)
+    static std::string get_token_name(const token_i type)
     {
         switch (type)
         {
@@ -246,7 +246,7 @@ protected:
 
         EXPECT_EQ(tokens->types[index], expected_type)
             << "Token type mismatch at index " << index << ":\n"
-            << "Expected: " << TokenPrinter::print({token.start, token.length, expected_type, token.flags}, lexer) <<
+            << "Expected: " << TokenPrinter::print({ token.start, token.length, expected_type, token.flags }, lexer) <<
  "\n"
             << "Actual:   " << TokenPrinter::print(token, lexer);
 
@@ -263,13 +263,9 @@ protected:
         std::cout << TokenPrinter::print(*tokens, lexer);
     }
 
-    void SetUp() override
-    {
-    }
+    void SetUp() override {}
 
-    void TearDown() override
-    {
-    }
+    void TearDown() override {}
 
     Lexer lexer;
 };
@@ -522,23 +518,23 @@ TEST_F(LexerTest, ErrorRecovery)
         i++;
     verify_token(tokens, i++, token_i::SEMICOLON, source); // ;
 
-    verify_token(tokens, i++, token_i::VAR, source); // var
-    verify_token(tokens, i++, token_i::IDENTIFIER, source); // y
-    verify_token(tokens, i++, token_i::EQUAL, source); // =
+    verify_token(tokens, i++, token_i::VAR, source);         // var
+    verify_token(tokens, i++, token_i::IDENTIFIER, source);  // y
+    verify_token(tokens, i++, token_i::EQUAL, source);       // =
     verify_token(tokens, i++, token_i::NUM_LITERAL, source); // 42
-    verify_token(tokens, i++, token_i::SEMICOLON, source); // ;
+    verify_token(tokens, i++, token_i::SEMICOLON, source);   // ;
 
-    verify_token(tokens, i++, token_i::VAR, source); // var
+    verify_token(tokens, i++, token_i::VAR, source);        // var
     verify_token(tokens, i++, token_i::IDENTIFIER, source); // z
-    verify_token(tokens, i++, token_i::EQUAL, source); // =
-    i++; // Skip the @ token
-    verify_token(tokens, i++, token_i::SEMICOLON, source); // ;
+    verify_token(tokens, i++, token_i::EQUAL, source);      // =
+    i++;                                                    // Skip the @ token
+    verify_token(tokens, i++, token_i::SEMICOLON, source);  // ;
 
-    verify_token(tokens, i++, token_i::VAR, source); // var
+    verify_token(tokens, i++, token_i::VAR, source);        // var
     verify_token(tokens, i++, token_i::IDENTIFIER, source); // valid
-    verify_token(tokens, i++, token_i::EQUAL, source); // =
-    verify_token(tokens, i++, token_i::TRUE, source); // true
-    verify_token(tokens, i++, token_i::SEMICOLON, source); // ;
+    verify_token(tokens, i++, token_i::EQUAL, source);      // =
+    verify_token(tokens, i++, token_i::TRUE, source);       // true
+    verify_token(tokens, i++, token_i::SEMICOLON, source);  // ;
 
     ASSERT_EQ(tokens->types[static_cast<std::vector<token_i>::size_type>(i)], token_i::END_OF_FILE);
 }

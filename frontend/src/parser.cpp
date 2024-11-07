@@ -29,11 +29,11 @@ namespace yu::frontend
             ir_node *current = nodes.top();
             nodes.pop();
 
-            for (std::iterator_traits<std::__pointer<ir_node *, std::allocator<ir_node *> >::type>::reference child:
+            for (const auto& child:
                  current->children)
             {
                 if (child)
-                    nodes.push(child);
+                    nodes.emplace(child);
             }
 
             if (current->type == ir_t::NODE_IDENTIFIER ||
@@ -67,8 +67,7 @@ namespace yu::frontend
         if (!ctx)
             return;
 
-        // Clean up
-        for (std::iterator_traits<std::__pointer<ir_node *, std::allocator<ir_node *> >::type>::reference node: ctx->
+        for (const auto& node: ctx->
              scope_stack)
         {
             if (node)
@@ -76,7 +75,6 @@ namespace yu::frontend
         }
         ctx->scope_stack.clear();
 
-        // Clean up current node if present
         if (ctx->current)
         {
             destroy_node(ctx->current);
@@ -86,20 +84,22 @@ namespace yu::frontend
         delete ctx;
     }
 
-    std::unique_ptr<ir_node> parse(const char* src, const lang::TokenList *tokens)
+    std::unique_ptr<ir_node> parse(const char *src, const lang::TokenList *tokens)
     {
         if (!tokens || !src)
             return nullptr;
 
         auto *ctx = create_parse_context(tokens);
-        ctx->src = src;  // Store in context
+        ctx->src = src;
+        // This will be later switched to a switch case to determine which function to call
+        // as the language is not object-oriented
         const auto status = parse_class(ctx);
         std::unique_ptr<ir_node> result;
 
         if (status == bt::status_i::SUCCESS && !ctx->state.in_error)
         {
             result.reset(ctx->current);
-            ctx->current = nullptr; // prevent double-free
+            ctx->current = nullptr;
         }
 
         destroy_parse_context(ctx);
@@ -127,7 +127,7 @@ namespace yu::frontend
     }
 
     ALWAYS_INLINE HOT_FUNCTION
-    bt::status_i parse_expression(parse_context *ctx)
+    bt::status_i parse_expression(parse_context *ctx) // NOLINT(*-no-recursion)
     {
         return parse_assignment(ctx);
     }
@@ -223,7 +223,7 @@ namespace yu::frontend
 
         // Store class name
         ctx->tokens->types[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
-        const auto &start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+        ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
         const auto &length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
 
         auto *name_node = create_node(ir_t::NODE_IDENTIFIER);
@@ -304,7 +304,7 @@ namespace yu::frontend
 
         // Store method name
         ctx->tokens->types[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
-        const auto &name_start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+        ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
         const auto &name_length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
             ctx->state.pos - 1)];
 
@@ -397,7 +397,7 @@ namespace yu::frontend
 
         // Store field name
         ctx->tokens->types[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
-        const auto &name_start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+        ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
         const auto &name_length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
             ctx->state.pos - 1)];
 
@@ -454,17 +454,9 @@ namespace yu::frontend
         auto has_visibility = false;
         auto visibility = ir_t::NODE_IDENTIFIER;
 
-        if (match_token(ctx, lang::token_i::PUBLIC) == bt::status_i::SUCCESS)
-        {
-            has_visibility = true;
-            visibility = ir_t::NODE_IDENTIFIER;
-        }
-        else if (match_token(ctx, lang::token_i::PRIVATE) == bt::status_i::SUCCESS)
-        {
-            has_visibility = true;
-            visibility = ir_t::NODE_IDENTIFIER;
-        }
-        else if (match_token(ctx, lang::token_i::PROTECTED) == bt::status_i::SUCCESS)
+        if (match_token(ctx, lang::token_i::PUBLIC) == bt::status_i::SUCCESS ||
+            match_token(ctx, lang::token_i::PRIVATE) == bt::status_i::SUCCESS ||
+            match_token(ctx, lang::token_i::PROTECTED) == bt::status_i::SUCCESS)
         {
             has_visibility = true;
             visibility = ir_t::NODE_IDENTIFIER;
@@ -793,15 +785,12 @@ namespace yu::frontend
             auto *literal = create_node(ir_t::NODE_LITERAL);
 
             // Convert string to numeric value
-            std::string numStr(ctx->tokens->starts[start], length);
-
-            // Check for hex/binary prefix
+            std::string numStr(ctx->tokens->starts[start], static_cast<char>(length));
             if (length > 2 && numStr[static_cast<std::string::size_type>(0)] == '0')
             {
                 if (numStr[static_cast<std::string::size_type>(1)] == 'x' || numStr[static_cast<std::string::size_type>(
                         1)] == 'X')
                 {
-                    // Hex number
                     literal->value.num_val = std::strtod(numStr.c_str(), nullptr);
                     ctx->current = literal;
                     return bt::status_i::SUCCESS;
@@ -824,7 +813,7 @@ namespace yu::frontend
 
         if (match_token(ctx, lang::token_i::STR_LITERAL) == bt::status_i::SUCCESS)
         {
-            const auto &start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+            ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
             const auto &length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
                 ctx->state.pos - 1)];
 
@@ -839,7 +828,7 @@ namespace yu::frontend
 
         if (match_token(ctx, lang::token_i::IDENTIFIER) == bt::status_i::SUCCESS)
         {
-            const auto &start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+            ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
             const auto &length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
                 ctx->state.pos - 1)];
 
@@ -882,7 +871,7 @@ namespace yu::frontend
         }
 
         // Store variable name
-        const auto &name_start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+        ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
         const auto &name_length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
             ctx->state.pos - 1)];
 
@@ -1108,7 +1097,7 @@ namespace yu::frontend
                 return bt::status_i::FAILURE;
             }
 
-            const auto &name_start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(
+            ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(
                 ctx->state.pos - 1)];
             const auto &name_length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
                 ctx->state.pos - 1)];
@@ -1166,16 +1155,13 @@ namespace yu::frontend
         const auto pos_backup = ctx->state.pos;
 
         // Parse class keyword is handled by parse_class()
-
-        // Parse class name (identifier)
         if (match_token(ctx, lang::token_i::IDENTIFIER) == bt::status_i::FAILURE)
         {
             ctx->state.pos = pos_backup;
             return bt::status_i::FAILURE;
         }
 
-        // Store class name in current node (assumed to be NODE_CLASS)
-        const auto &name_start = ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
+        ctx->tokens->starts[static_cast<std::vector<unsigned>::size_type>(ctx->state.pos - 1)];
         const auto &name_length = ctx->tokens->lengths[static_cast<std::vector<unsigned>::size_type>(
             ctx->state.pos - 1)];
 

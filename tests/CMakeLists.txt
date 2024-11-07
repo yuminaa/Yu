@@ -1,17 +1,13 @@
 # This file is part of the Yu programming language and is licensed under MIT License;
 # See LICENSE.txt for details
 
-# Move googletest setup before the executable definition
-# This ensures GTest targets are available when we need them
 add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/googletest ${CMAKE_BINARY_DIR}/googletest)
 
-# Create the test executable
 add_executable(yu-test
         unittest/tokenizing.cpp
         unittest/parsing.cpp
 )
 
-# Include directories - keeping the essential ones
 target_include_directories(yu-test PRIVATE
         ${CMAKE_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/frontend/include

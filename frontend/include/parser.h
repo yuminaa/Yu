@@ -16,7 +16,7 @@ namespace yu::frontend
 
     struct parse_context
     {
-        const char* src;
+        const char *src;
         const lang::TokenList *tokens{};
         ir_node *current{};
 
@@ -156,7 +156,7 @@ namespace yu::frontend
     HOT_FUNCTION
     void destroy_node(ir_node *node);
 
-    std::unique_ptr<ir_node> parse(const char* src, const lang::TokenList *tokens);
+    std::unique_ptr<ir_node> parse(const char *src, const lang::TokenList *tokens);
 
     HOT_FUNCTION
     parse_context *create_parse_context(const lang::TokenList *tokens);
@@ -164,13 +164,13 @@ namespace yu::frontend
     HOT_FUNCTION
     void destroy_parse_context(parse_context *ctx);
 
-    #if defined(YUMINA_ARCH_X64)
+#if defined(YUMINA_ARCH_X64)
     ALWAYS_INLINE HOT_FUNCTION
         bool token_compare(lang::token_i current, const lang::token_i* types, size_t count);
-    #elif defined(YUMINA_ARCH_ARM64)
-        HOT_FUNCTION
-        bool token_compare(lang::token_i current, const lang::token_i *types, size_t count);
-    #endif
+#elif defined(YUMINA_ARCH_ARM64)
+    HOT_FUNCTION
+    bool token_compare(lang::token_i current, const lang::token_i *types, size_t count);
+#endif
 }
 
 #endif

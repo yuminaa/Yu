@@ -5,10 +5,10 @@
 #include "../include/lexer.h"
 #include "../include/parser.h"
 
-class ParserTest : public ::testing::Test
+class ParserTest : public testing::Test
 {
 protected:
-    static std::unique_ptr<yu::frontend::ir_node> tryParse(const char *code)
+    static std::unique_ptr<yu::frontend::ir_node> try_parse(const char *code)
     {
         auto lexer = yu::frontend::create_lexer(code);
         const auto tokens = tokenize(lexer);
@@ -28,20 +28,21 @@ TEST_F(ParserTest, ExpressionParsing)
             }
         }
     )";
-    EXPECT_NE(tryParse(code.data()), nullptr);
+    EXPECT_NE(try_parse(code.data()), nullptr);
 }
 
 TEST_F(ParserTest, VariableDeclarations)
 {
     const std::string code = R"(
-        class Test
+        class Main
         {
-            var a: i32;
+            var a: i32 = 42;
             var b: i32 = 42;
             var c: string = "hello";
         }
+
     )";
-    EXPECT_NE(tryParse(code.data()), nullptr);
+    EXPECT_NE(try_parse(code.data()), nullptr);
 }
 
 // Test visibility modifiers
@@ -55,10 +56,9 @@ TEST_F(ParserTest, Visibility)
             protected var z: i32;
         }
     )";
-    EXPECT_NE(tryParse(code.data()), nullptr);
+    EXPECT_NE(try_parse(code.data()), nullptr);
 }
 
-// Test return statements
 TEST_F(ParserTest, ReturnStatements)
 {
     const std::string code = R"(
@@ -70,7 +70,7 @@ TEST_F(ParserTest, ReturnStatements)
             }
         }
     )";
-    EXPECT_NE(tryParse(code.data()), nullptr);
+    EXPECT_NE(try_parse(code.data()), nullptr);
 }
 
 // Test method calls
@@ -86,5 +86,5 @@ TEST_F(ParserTest, MethodCalls)
             private function b() -> void { }
         }
     )";
-    EXPECT_NE(tryParse(code.data()), nullptr);
+    EXPECT_NE(try_parse(code.data()), nullptr);
 }

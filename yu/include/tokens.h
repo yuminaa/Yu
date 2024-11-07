@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include <vector>
-#include <common/arch.hpp>
 
 namespace yu::lang
 {
@@ -79,42 +78,42 @@ namespace yu::lang
         NULLABLE_BOOLEAN,
 
         // Single character operators
-        PLUS,           // +
-        MINUS,          // -
-        STAR,           // *
-        SLASH,          // /
-        PERCENT,        // %
-        EQUAL,          // =
-        BANG,           // !
-        LESS,           // <
-        GREATER,        // >
-        AND,            // &
-        OR,             // |
-        XOR,            // ^
-        TILDE,          // ~
-        DOT,            // .
+        PLUS,    // +
+        MINUS,   // -
+        STAR,    // *
+        SLASH,   // /
+        PERCENT, // %
+        EQUAL,   // =
+        BANG,    // !
+        LESS,    // <
+        GREATER, // >
+        AND,     // &
+        OR,      // |
+        XOR,     // ^
+        TILDE,   // ~
+        DOT,     // .
 
         // Delimiters
-        LEFT_PAREN,     // (
-        RIGHT_PAREN,    // )
-        LEFT_BRACE,     // {
-        RIGHT_BRACE,    // }
-        LEFT_BRACKET,   // [
-        RIGHT_BRACKET,  // ]
-        COMMA,          // ,
-        COLON,          // :
-        SEMICOLON,      // ;
-        QUESTION,       // ?
+        LEFT_PAREN,    // (
+        RIGHT_PAREN,   // )
+        LEFT_BRACE,    // {
+        RIGHT_BRACE,   // }
+        LEFT_BRACKET,  // [
+        RIGHT_BRACKET, // ]
+        COMMA,         // ,
+        COLON,         // :
+        SEMICOLON,     // ;
+        QUESTION,      // ?
 
         // Annotations
-        ALIGN_ANNOT,          // @align
-        DEPRECATED_ANNOT,     // @deprecated
-        PACKED_ANNOT,         // @packed
-        NO_DISCARD_ANNOT,     // @nodiscard
-        VOLATILE_ANNOT,       // @volatile
-        LAZY_ANNOT,           // @lazy
-        PURE_ANNOT,           // @pure
-        TAIL_REC_ANNOT,       // @tailrec
+        ALIGN_ANNOT,      // @align
+        DEPRECATED_ANNOT, // @deprecated
+        PACKED_ANNOT,     // @packed
+        NO_DISCARD_ANNOT, // @nodiscard
+        VOLATILE_ANNOT,   // @volatile
+        LAZY_ANNOT,       // @lazy
+        PURE_ANNOT,       // @pure
+        TAIL_REC_ANNOT,   // @tailrec
 
         // Special tokens
         IDENTIFIER,
@@ -265,20 +264,12 @@ namespace yu::lang
         std::vector<token_i> types;
         std::vector<uint8_t> flags;
 
-        void push_back(const token_t& token);
-        void reserve(const uint32_t& n);
+        void push_back(const token_t &token);
+
+        void reserve(const uint32_t &n);
+
         [[nodiscard]] size_t size() const;
     };
-
-    ALWAYS_INLINE void set_flag(uint8_t& flags, token_flags flag)
-    {
-        flags |= static_cast<uint8_t>(flag);
-    }
-
-    ALWAYS_INLINE bool has_flag(const uint8_t flags, token_flags flag)
-    {
-        return (flags & static_cast<uint8_t>(flag)) != 0;
-    }
 }
 
 #endif
