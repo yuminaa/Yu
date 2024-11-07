@@ -1,3 +1,6 @@
+// This file is part of the Yu programming language and is licensed under MIT License;
+// See LICENSE.txt for details
+
 #ifndef YU_TOKEN_H
 #define YU_TOKEN_H
 
