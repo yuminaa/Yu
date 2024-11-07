@@ -95,16 +95,16 @@ where `STDMETHODCALLTYPE` is defined by `<objbase.h>` on Windows.
 
 The typical work flow is:
 
-1.  Import the gMock names you need to use. All gMock symbols are in the
-    `testing` namespace unless they are macros or otherwise noted.
-2.  Create the mock objects.
-3.  Optionally, set the default actions of the mock objects.
-4.  Set your expectations on the mock objects (How will they be called? What
-    will they do?).
-5.  Exercise code that uses the mock objects; if necessary, check the result
-    using googletest assertions.
-6.  When a mock object is destructed, gMock automatically verifies that all
-    expectations on it have been satisfied.
+1. Import the gMock names you need to use. All gMock symbols are in the
+   `testing` namespace unless they are macros or otherwise noted.
+2. Create the mock objects.
+3. Optionally, set the default actions of the mock objects.
+4. Set your expectations on the mock objects (How will they be called? What
+   will they do?).
+5. Exercise code that uses the mock objects; if necessary, check the result
+   using googletest assertions.
+6. When a mock object is destructed, gMock automatically verifies that all
+   expectations on it have been satisfied.
 
 Here's an example:
 
@@ -235,7 +235,7 @@ it.
 
 ## Flags
 
-| Flag                           | Description                               |
-| :----------------------------- | :---------------------------------------- |
-| `--gmock_catch_leaked_mocks=0` | Don't report leaked mock objects as failures. |
-| `--gmock_verbose=LEVEL` | Sets the default verbosity level (`info`, `warning`, or `error`) of Google Mock messages. |
+| Flag                           | Description                                                                               |
+|:-------------------------------|:------------------------------------------------------------------------------------------|
+| `--gmock_catch_leaked_mocks=0` | Don't report leaked mock objects as failures.                                             |
+| `--gmock_verbose=LEVEL`        | Sets the default verbosity level (`info`, `warning`, or `error`) of Google Mock messages. |

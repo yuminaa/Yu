@@ -8,10 +8,10 @@ we recommend this tutorial as a starting point.
 
 To complete this tutorial, you'll need:
 
-*   A compatible operating system (e.g. Linux, macOS, Windows).
-*   A compatible C++ compiler that supports at least C++14.
-*   [Bazel](https://bazel.build/) 7.0 or higher, the preferred build system used
-    by the GoogleTest team.
+* A compatible operating system (e.g. Linux, macOS, Windows).
+* A compatible C++ compiler that supports at least C++14.
+* [Bazel](https://bazel.build/) 7.0 or higher, the preferred build system used
+  by the GoogleTest team.
 
 See [Supported Platforms](platforms.md) for more information about platforms
 compatible with GoogleTest.
@@ -140,7 +140,7 @@ GoogleTest.
 
 ## Next steps
 
-*   [Check out the Primer](primer.md) to start learning how to write simple
-    tests.
-*   [See the code samples](samples.md) for more examples showing how to use a
-    variety of GoogleTest features.
+* [Check out the Primer](primer.md) to start learning how to write simple
+  tests.
+* [See the code samples](samples.md) for more examples showing how to use a
+  variety of GoogleTest features.

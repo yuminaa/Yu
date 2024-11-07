@@ -12,12 +12,12 @@ It is easy to confuse the term *fake objects* with mock objects. Fakes and mocks
 actually mean very different things in the Test-Driven Development (TDD)
 community:
 
-*   **Fake** objects have working implementations, but usually take some
-    shortcut (perhaps to make the operations less expensive), which makes them
-    not suitable for production. An in-memory file system would be an example of
-    a fake.
-*   **Mocks** are objects pre-programmed with *expectations*, which form a
-    specification of the calls they are expected to receive.
+* **Fake** objects have working implementations, but usually take some
+  shortcut (perhaps to make the operations less expensive), which makes them
+  not suitable for production. An in-memory file system would be an example of
+  a fake.
+* **Mocks** are objects pre-programmed with *expectations*, which form a
+  specification of the calls they are expected to receive.
 
 If all this seems too abstract for you, don't worry - the most important thing
 to remember is that a mock allows you to check the *interaction* between itself
@@ -30,25 +30,25 @@ jMock/EasyMock does to Java (well, more or less).
 
 When using gMock,
 
-1.  first, you use some simple macros to describe the interface you want to
-    mock, and they will expand to the implementation of your mock class;
-2.  next, you create some mock objects and specify its expectations and behavior
-    using an intuitive syntax;
-3.  then you exercise code that uses the mock objects. gMock will catch any
-    violation to the expectations as soon as it arises.
+1. first, you use some simple macros to describe the interface you want to
+   mock, and they will expand to the implementation of your mock class;
+2. next, you create some mock objects and specify its expectations and behavior
+   using an intuitive syntax;
+3. then you exercise code that uses the mock objects. gMock will catch any
+   violation to the expectations as soon as it arises.
 
 ## Why gMock?
 
 While mock objects help you remove unnecessary dependencies in tests and make
 them fast and reliable, using mocks manually in C++ is *hard*:
 
-*   Someone has to implement the mocks. The job is usually tedious and
-    error-prone. No wonder people go great distance to avoid it.
-*   The quality of those manually written mocks is a bit, uh, unpredictable. You
-    may see some really polished ones, but you may also see some that were
-    hacked up in a hurry and have all sorts of ad hoc restrictions.
-*   The knowledge you gained from using one mock doesn't transfer to the next
-    one.
+* Someone has to implement the mocks. The job is usually tedious and
+  error-prone. No wonder people go great distance to avoid it.
+* The quality of those manually written mocks is a bit, uh, unpredictable. You
+  may see some really polished ones, but you may also see some that were
+  hacked up in a hurry and have all sorts of ad hoc restrictions.
+* The knowledge you gained from using one mock doesn't transfer to the next
+  one.
 
 In contrast, Java and Python programmers have some fine mock frameworks (jMock,
 EasyMock, etc), which automate the creation of mocks. As a result, mocking is a
@@ -59,29 +59,29 @@ gMock was built to help C++ programmers. It was inspired by jMock and EasyMock,
 but designed with C++'s specifics in mind. It is your friend if any of the
 following problems is bothering you:
 
-*   You are stuck with a sub-optimal design and wish you had done more
-    prototyping before it was too late, but prototyping in C++ is by no means
-    "rapid".
-*   Your tests are slow as they depend on too many libraries or use expensive
-    resources (e.g. a database).
-*   Your tests are brittle as some resources they use are unreliable (e.g. the
-    network).
-*   You want to test how your code handles a failure (e.g. a file checksum
-    error), but it's not easy to cause one.
-*   You need to make sure that your module interacts with other modules in the
-    right way, but it's hard to observe the interaction; therefore you resort to
-    observing the side effects at the end of the action, but it's awkward at
-    best.
-*   You want to "mock out" your dependencies, except that they don't have mock
-    implementations yet; and, frankly, you aren't thrilled by some of those
-    hand-written mocks.
+* You are stuck with a sub-optimal design and wish you had done more
+  prototyping before it was too late, but prototyping in C++ is by no means
+  "rapid".
+* Your tests are slow as they depend on too many libraries or use expensive
+  resources (e.g. a database).
+* Your tests are brittle as some resources they use are unreliable (e.g. the
+  network).
+* You want to test how your code handles a failure (e.g. a file checksum
+  error), but it's not easy to cause one.
+* You need to make sure that your module interacts with other modules in the
+  right way, but it's hard to observe the interaction; therefore you resort to
+  observing the side effects at the end of the action, but it's awkward at
+  best.
+* You want to "mock out" your dependencies, except that they don't have mock
+  implementations yet; and, frankly, you aren't thrilled by some of those
+  hand-written mocks.
 
 We encourage you to use gMock as
 
-*   a *design* tool, for it lets you experiment with your interface design early
-    and often. More iterations lead to better designs!
-*   a *testing* tool to cut your tests' outbound dependencies and probe the
-    interaction between your module and its collaborators.
+* a *design* tool, for it lets you experiment with your interface design early
+  and often. More iterations lead to better designs!
+* a *testing* tool to cut your tests' outbound dependencies and probe the
+  interaction between your module and its collaborators.
 
 ## Getting Started
 
@@ -144,22 +144,22 @@ class, relax - gMock turns this task into a fun game! (Well, almost.)
 Using the `Turtle` interface as example, here are the simple steps you need to
 follow:
 
-*   Derive a class `MockTurtle` from `Turtle`.
-*   Take a *virtual* function of `Turtle` (while it's possible to
-    [mock non-virtual methods using templates](gmock_cook_book.md#MockingNonVirtualMethods),
-    it's much more involved).
-*   In the `public:` section of the child class, write `MOCK_METHOD();`
-*   Now comes the fun part: you take the function signature, cut-and-paste it
-    into the macro, and add two commas - one between the return type and the
-    name, another between the name and the argument list.
-*   If you're mocking a const method, add a 4th parameter containing `(const)`
-    (the parentheses are required).
-*   Since you're overriding a virtual method, we suggest adding the `override`
-    keyword. For const methods the 4th parameter becomes `(const, override)`,
-    for non-const methods just `(override)`. This isn't mandatory.
-*   Repeat until all virtual functions you want to mock are done. (It goes
-    without saying that *all* pure virtual methods in your abstract class must
-    be either mocked or overridden.)
+* Derive a class `MockTurtle` from `Turtle`.
+* Take a *virtual* function of `Turtle` (while it's possible to
+  [mock non-virtual methods using templates](gmock_cook_book.md#MockingNonVirtualMethods),
+  it's much more involved).
+* In the `public:` section of the child class, write `MOCK_METHOD();`
+* Now comes the fun part: you take the function signature, cut-and-paste it
+  into the macro, and add two commas - one between the return type and the
+  name, another between the name and the argument list.
+* If you're mocking a const method, add a 4th parameter containing `(const)`
+  (the parentheses are required).
+* Since you're overriding a virtual method, we suggest adding the `override`
+  keyword. For const methods the 4th parameter becomes `(const, override)`,
+  for non-const methods just `(override)`. This isn't mandatory.
+* Repeat until all virtual functions you want to mock are done. (It goes
+  without saying that *all* pure virtual methods in your abstract class must
+  be either mocked or overridden.)
 
 After the process, you should have something like:
 
@@ -208,17 +208,17 @@ specific domain much better than `Foo` does.
 
 Once you have a mock class, using it is easy. The typical work flow is:
 
-1.  Import the gMock names from the `testing` namespace such that you can use
-    them unqualified (You only have to do it once per file). Remember that
-    namespaces are a good idea.
-2.  Create some mock objects.
-3.  Specify your expectations on them (How many times will a method be called?
-    With what arguments? What should it do? etc.).
-4.  Exercise some code that uses the mocks; optionally, check the result using
-    googletest assertions. If a mock method is called more than expected or with
-    wrong arguments, you'll get an error immediately.
-5.  When a mock is destructed, gMock will automatically check whether all
-    expectations on it have been satisfied.
+1. Import the gMock names from the `testing` namespace such that you can use
+   them unqualified (You only have to do it once per file). Remember that
+   namespaces are a good idea.
+2. Create some mock objects.
+3. Specify your expectations on them (How many times will a method be called?
+   With what arguments? What should it do? etc.).
+4. Exercise some code that uses the mocks; optionally, check the result using
+   googletest assertions. If a mock method is called more than expected or with
+   wrong arguments, you'll get an error immediately.
+5. When a mock is destructed, gMock will automatically check whether all
+   expectations on it have been satisfied.
 
 Here's an example:
 
@@ -419,12 +419,12 @@ list of built-in cardinalities you can use, see
 The `Times()` clause can be omitted. **If you omit `Times()`, gMock will infer
 the cardinality for you.** The rules are easy to remember:
 
-*   If **neither** `WillOnce()` **nor** `WillRepeatedly()` is in the
-    `EXPECT_CALL()`, the inferred cardinality is `Times(1)`.
-*   If there are *n* `WillOnce()`'s but **no** `WillRepeatedly()`, where *n* >=
-    1, the cardinality is `Times(n)`.
-*   If there are *n* `WillOnce()`'s and **one** `WillRepeatedly()`, where *n* >=
-    0, the cardinality is `Times(AtLeast(n))`.
+* If **neither** `WillOnce()` **nor** `WillRepeatedly()` is in the
+  `EXPECT_CALL()`, the inferred cardinality is `Times(1)`.
+* If there are *n* `WillOnce()`'s but **no** `WillRepeatedly()`, where *n* >=
+  1, the cardinality is `Times(n)`.
+* If there are *n* `WillOnce()`'s and **one** `WillRepeatedly()`, where *n* >=
+  0, the cardinality is `Times(AtLeast(n))`.
 
 **Quick quiz:** what do you think will happen if a function is expected to be
 called twice but actually called four times?

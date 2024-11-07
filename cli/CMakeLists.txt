@@ -23,4 +23,4 @@ target_link_libraries(yu-cli PRIVATE
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(yu-cli PRIVATE c++abi)
-endif()
+endif ()

@@ -14,132 +14,214 @@ class TokenPrinter
     static constexpr auto YELLOW = "\033[33m";
     static constexpr auto RESET = "\033[0m";
 
-    static std::string get_token_name(token_i type)
+    static std::string get_token_name(const token_i type)
     {
         switch (type)
         {
-            case token_i::TRUE: return "TRUE";
-            case token_i::FALSE: return "FALSE";
-            case token_i::NIL: return "NIL";
-            case token_i::IMPORT: return "IMPORT";
-            case token_i::VAR: return "VAR";
-            case token_i::CONST: return "CONST";
-            case token_i::FUNCTION: return "FUNCTION";
-            case token_i::INLINE: return "INLINE";
-            case token_i::RETURN: return "RETURN";
-            case token_i::NEW: return "NEW";
-            case token_i::ENUM: return "ENUM";
-            case token_i::IF: return "IF";
-            case token_i::ELSE: return "ELSE";
-            case token_i::FOR: return "FOR";
-            case token_i::WHILE: return "WHILE";
-            case token_i::BREAK: return "BREAK";
-            case token_i::CONTINUE: return "CONTINUE";
-            case token_i::SWITCH: return "SWITCH";
-            case token_i::CASE: return "CASE";
-            case token_i::DEFAULT: return "DEFAULT";
-            case token_i::CLASS: return "CLASS";
-            case token_i::EXTENDS: return "EXTENDS";
-            case token_i::FINAL: return "FINAL";
-            case token_i::PUBLIC: return "PUBLIC";
-            case token_i::PRIVATE: return "PRIVATE";
-            case token_i::PROTECTED: return "PROTECTED";
-            case token_i::STATIC: return "STATIC";
-            case token_i::AWAIT: return "AWAIT";
-            case token_i::ASYNC: return "ASYNC";
-            case token_i::TRY: return "TRY";
-            case token_i::CATCH: return "CATCH";
-            case token_i::FROM: return "FROM";
+            case token_i::TRUE:
+                return "TRUE";
+            case token_i::FALSE:
+                return "FALSE";
+            case token_i::NIL:
+                return "NIL";
+            case token_i::IMPORT:
+                return "IMPORT";
+            case token_i::VAR:
+                return "VAR";
+            case token_i::CONST:
+                return "CONST";
+            case token_i::FUNCTION:
+                return "FUNCTION";
+            case token_i::INLINE:
+                return "INLINE";
+            case token_i::RETURN:
+                return "RETURN";
+            case token_i::NEW:
+                return "NEW";
+            case token_i::ENUM:
+                return "ENUM";
+            case token_i::IF:
+                return "IF";
+            case token_i::ELSE:
+                return "ELSE";
+            case token_i::FOR:
+                return "FOR";
+            case token_i::WHILE:
+                return "WHILE";
+            case token_i::BREAK:
+                return "BREAK";
+            case token_i::CONTINUE:
+                return "CONTINUE";
+            case token_i::SWITCH:
+                return "SWITCH";
+            case token_i::CASE:
+                return "CASE";
+            case token_i::DEFAULT:
+                return "DEFAULT";
+            case token_i::CLASS:
+                return "CLASS";
+            case token_i::EXTENDS:
+                return "EXTENDS";
+            case token_i::FINAL:
+                return "FINAL";
+            case token_i::PUBLIC:
+                return "PUBLIC";
+            case token_i::PRIVATE:
+                return "PRIVATE";
+            case token_i::PROTECTED:
+                return "PROTECTED";
+            case token_i::STATIC:
+                return "STATIC";
+            case token_i::AWAIT:
+                return "AWAIT";
+            case token_i::ASYNC:
+                return "ASYNC";
+            case token_i::TRY:
+                return "TRY";
+            case token_i::CATCH:
+                return "CATCH";
+            case token_i::FROM:
+                return "FROM";
             // Basic types
-            case token_i::U8: return "U8";
-            case token_i::I8: return "I8";
-            case token_i::U16: return "U16";
-            case token_i::I16: return "I16";
-            case token_i::U32: return "U32";
-            case token_i::I32: return "I32";
-            case token_i::U64: return "U64";
-            case token_i::I64: return "I64";
-            case token_i::F32: return "F32";
-            case token_i::F64: return "F64";
-            case token_i::STRING: return "STRING";
-            case token_i::BOOLEAN: return "BOOLEAN";
-            case token_i::VOID: return "VOID";
-            case token_i::AUTO: return "AUTO";
-            case token_i::PTR: return "PTR";
+            case token_i::U8:
+                return "U8";
+            case token_i::I8:
+                return "I8";
+            case token_i::U16:
+                return "U16";
+            case token_i::I16:
+                return "I16";
+            case token_i::U32:
+                return "U32";
+            case token_i::I32:
+                return "I32";
+            case token_i::U64:
+                return "U64";
+            case token_i::I64:
+                return "I64";
+            case token_i::F32:
+                return "F32";
+            case token_i::F64:
+                return "F64";
+            case token_i::STRING:
+                return "STRING";
+            case token_i::BOOLEAN:
+                return "BOOLEAN";
+            case token_i::VOID:
+                return "VOID";
+            case token_i::AUTO:
+                return "AUTO";
+            case token_i::PTR:
+                return "PTR";
             // Operators
-            case token_i::PLUS: return "PLUS";
-            case token_i::MINUS: return "MINUS";
-            case token_i::STAR: return "STAR";
-            case token_i::SLASH: return "SLASH";
-            case token_i::PERCENT: return "PERCENT";
-            case token_i::EQUAL: return "EQUAL";
-            case token_i::BANG: return "BANG";
-            case token_i::LESS: return "LESS";
-            case token_i::GREATER: return "GREATER";
-            case token_i::AND: return "AND";
-            case token_i::OR: return "OR";
-            case token_i::XOR: return "XOR";
-            case token_i::TILDE: return "TILDE";
-            case token_i::DOT: return "DOT";
+            case token_i::PLUS:
+                return "PLUS";
+            case token_i::MINUS:
+                return "MINUS";
+            case token_i::STAR:
+                return "STAR";
+            case token_i::SLASH:
+                return "SLASH";
+            case token_i::PERCENT:
+                return "PERCENT";
+            case token_i::EQUAL:
+                return "EQUAL";
+            case token_i::BANG:
+                return "BANG";
+            case token_i::LESS:
+                return "LESS";
+            case token_i::GREATER:
+                return "GREATER";
+            case token_i::AND:
+                return "AND";
+            case token_i::OR:
+                return "OR";
+            case token_i::XOR:
+                return "XOR";
+            case token_i::TILDE:
+                return "TILDE";
+            case token_i::DOT:
+                return "DOT";
             // Delimiters
-            case token_i::LEFT_PAREN: return "LEFT_PAREN";
-            case token_i::RIGHT_PAREN: return "RIGHT_PAREN";
-            case token_i::LEFT_BRACE: return "LEFT_BRACE";
-            case token_i::RIGHT_BRACE: return "RIGHT_BRACE";
-            case token_i::LEFT_BRACKET: return "LEFT_BRACKET";
-            case token_i::RIGHT_BRACKET: return "RIGHT_BRACKET";
-            case token_i::COMMA: return "COMMA";
-            case token_i::COLON: return "COLON";
-            case token_i::SEMICOLON: return "SEMICOLON";
-            case token_i::QUESTION: return "QUESTION";
+            case token_i::LEFT_PAREN:
+                return "LEFT_PAREN";
+            case token_i::RIGHT_PAREN:
+                return "RIGHT_PAREN";
+            case token_i::LEFT_BRACE:
+                return "LEFT_BRACE";
+            case token_i::RIGHT_BRACE:
+                return "RIGHT_BRACE";
+            case token_i::LEFT_BRACKET:
+                return "LEFT_BRACKET";
+            case token_i::RIGHT_BRACKET:
+                return "RIGHT_BRACKET";
+            case token_i::COMMA:
+                return "COMMA";
+            case token_i::COLON:
+                return "COLON";
+            case token_i::SEMICOLON:
+                return "SEMICOLON";
+            case token_i::QUESTION:
+                return "QUESTION";
             // Special tokens
-            case token_i::IDENTIFIER: return "IDENTIFIER";
-            case token_i::NUM_LITERAL: return "NUM_LITERAL";
-            case token_i::STR_LITERAL: return "STR_LITERAL";
-            case token_i::ANNOTATION: return "ANNOTATION";
-            case token_i::UNKNOWN: return "UNKNOWN";
-            case token_i::END_OF_FILE: return "EOF";
-            default: return "UNHANDLED_TOKEN";
+            case token_i::IDENTIFIER:
+                return "IDENTIFIER";
+            case token_i::NUM_LITERAL:
+                return "NUM_LITERAL";
+            case token_i::STR_LITERAL:
+                return "STR_LITERAL";
+            case token_i::ANNOTATION:
+                return "ANNOTATION";
+            case token_i::UNKNOWN:
+                return "UNKNOWN";
+            case token_i::END_OF_FILE:
+                return "EOF";
+            default:
+                return "UNHANDLED_TOKEN";
         }
     }
 
 public:
-    static std::string print(const TokenList& tokens, const Lexer& lexer)
+    static std::string print(const TokenList &tokens, const Lexer &lexer)
     {
         std::stringstream ss;
         ss << YELLOW << "Tokens:" << RESET << "\n";
 
         for (std::vector<unsigned>::size_type i = 0; i < tokens.types.size(); ++i)
         {
-            auto [line, col] = get_line_col(lexer, {tokens.starts[i], tokens.lengths[i],
-                                                   tokens.types[i], tokens.flags[i]});
-            const std::string_view token_text = get_token_value(lexer, {tokens.starts[i], tokens.lengths[i],
-                                                                    tokens.types[i], tokens.flags[i]});
+            auto [line, col] = get_line_col(lexer, {
+                                                tokens.starts[i], tokens.lengths[i],
+                                                tokens.types[i], tokens.flags[i]
+                                            });
+            const std::string_view token_text = get_token_value(lexer, {
+                                                                    tokens.starts[i], tokens.lengths[i],
+                                                                    tokens.types[i], tokens.flags[i]
+                                                                });
 
             ss << YELLOW
-               << "[" << std::setw(3) << i << "] "
-               << std::setw(15) << get_token_name(tokens.types[i]) << " | "
-               << "'" << token_text << "'"
-               << " (line: " << line << ", col: " << col
-               << ", pos: " << tokens.starts[i] << ", len: " << tokens.lengths[i] << ")"
-               << RESET << "\n";
+                    << "[" << std::setw(3) << i << "] "
+                    << std::setw(15) << get_token_name(tokens.types[i]) << " | "
+                    << "'" << token_text << "'"
+                    << " (line: " << line << ", col: " << col
+                    << ", pos: " << tokens.starts[i] << ", len: " << tokens.lengths[i] << ")"
+                    << RESET << "\n";
         }
 
         return ss.str();
     }
 
-    static std::string print(const token_t& token, const Lexer& lexer)
+    static std::string print(const token_t &token, const Lexer &lexer)
     {
         std::stringstream ss;
         auto [line, col] = get_line_col(lexer, token);
         const std::string_view token_text = get_token_value(lexer, token);
 
         ss << YELLOW
-           << get_token_name(token.type) << " | "
-           << "'" << token_text << "'"
-           << " (line: " << line << ", col: " << col
-           << ", pos: " << token.start << ", len: " << token.length << ")"
-           << RESET;
+                << get_token_name(token.type) << " | "
+                << "'" << token_text << "'"
+                << " (line: " << line << ", col: " << col
+                << ", pos: " << token.start << ", len: " << token.length << ")"
+                << RESET;
 
         return ss.str();
     }
@@ -149,8 +231,8 @@ public:
 class LexerTest : public testing::Test
 {
 protected:
-    void verify_token(const TokenList* tokens, auto index, const token_i expected_type,
-                     const std::string_view& source)
+    void verify_token(const TokenList *tokens, auto index, const token_i expected_type,
+                      const std::string_view &source)
     {
         ASSERT_LT(index, tokens->types.size())
             << "Token index out of range";
@@ -164,7 +246,8 @@ protected:
 
         EXPECT_EQ(tokens->types[index], expected_type)
             << "Token type mismatch at index " << index << ":\n"
-            << "Expected: " << TokenPrinter::print({token.start, token.length, expected_type, token.flags}, lexer) << "\n"
+            << "Expected: " << TokenPrinter::print({ token.start, token.length, expected_type, token.flags }, lexer) <<
+ "\n"
             << "Actual:   " << TokenPrinter::print(token, lexer);
 
         auto actual_value = get_token_value(lexer, token);
@@ -175,12 +258,13 @@ protected:
             << "Actual:   '" << actual_value << "'";
     }
 
-    void dump_tokens(const TokenList* tokens) const
+    void dump_tokens(const TokenList *tokens) const
     {
         std::cout << TokenPrinter::print(*tokens, lexer);
     }
 
     void SetUp() override {}
+
     void TearDown() override {}
 
     Lexer lexer;
@@ -429,21 +513,22 @@ TEST_F(LexerTest, ErrorRecovery)
     verify_token(tokens, i++, token_i::IDENTIFIER, source);
     verify_token(tokens, i++, token_i::EQUAL, source);
 
-    while (i < tokens->types.size() && tokens->types[static_cast<std::vector<token_i>::size_type>(i)] != token_i::SEMICOLON)
+    while (i < tokens->types.size() && tokens->types[static_cast<std::vector<token_i>::size_type>(i)] !=
+           token_i::SEMICOLON)
         i++;
-    verify_token(tokens, i++, token_i::SEMICOLON, source);  // ;
+    verify_token(tokens, i++, token_i::SEMICOLON, source); // ;
 
-    verify_token(tokens, i++, token_i::VAR, source);        // var
-    verify_token(tokens, i++, token_i::IDENTIFIER, source); // y
-    verify_token(tokens, i++, token_i::EQUAL, source);      // =
+    verify_token(tokens, i++, token_i::VAR, source);         // var
+    verify_token(tokens, i++, token_i::IDENTIFIER, source);  // y
+    verify_token(tokens, i++, token_i::EQUAL, source);       // =
     verify_token(tokens, i++, token_i::NUM_LITERAL, source); // 42
     verify_token(tokens, i++, token_i::SEMICOLON, source);   // ;
 
     verify_token(tokens, i++, token_i::VAR, source);        // var
     verify_token(tokens, i++, token_i::IDENTIFIER, source); // z
     verify_token(tokens, i++, token_i::EQUAL, source);      // =
-    i++; // Skip the @ token
-    verify_token(tokens, i++, token_i::SEMICOLON, source);   // ;
+    i++;                                                    // Skip the @ token
+    verify_token(tokens, i++, token_i::SEMICOLON, source);  // ;
 
     verify_token(tokens, i++, token_i::VAR, source);        // var
     verify_token(tokens, i++, token_i::IDENTIFIER, source); // valid
@@ -537,7 +622,7 @@ TEST_F(LexerTest, StringRecovery)
     verify_token(tokens, i++, token_i::VAR, source);
     verify_token(tokens, i++, token_i::IDENTIFIER, source);
     verify_token(tokens, i++, token_i::EQUAL, source);
-    while (tokens->types[static_cast< std::vector<token_i>::size_type>(i)] != token_i::VAR)
+    while (tokens->types[static_cast<std::vector<token_i>::size_type>(i)] != token_i::VAR)
         i++;
 
     verify_token(tokens, i++, token_i::VAR, source);
@@ -563,15 +648,15 @@ TEST_F(LexerTest, ComplexIdentifiers)
     const auto tokens = tokenize(lexer);
 
     size_t i = 0;
-    auto verify_identifier = [&](const std::string_view& expected)
+    auto verify_identifier = [&](const std::string_view &expected)
     {
         verify_token(tokens, i++, token_i::VAR, source);
         verify_token(tokens, i++, token_i::IDENTIFIER, source);
         EXPECT_EQ(get_token_value(lexer, {tokens->starts[static_cast<std::vector<unsigned>::size_type>(i - 1)],
-            tokens->lengths[static_cast<std::vector<unsigned>::size_type>(i - 1)],
-            tokens->types[static_cast<std::vector<unsigned>::size_type>(i - 1)],
-            tokens->flags[static_cast<std::vector<unsigned>::size_type>(i - 1)]}),
-            expected);
+                      tokens->lengths[static_cast<std::vector<unsigned>::size_type>(i - 1)],
+                      tokens->types[static_cast<std::vector<unsigned>::size_type>(i - 1)],
+                      tokens->flags[static_cast<std::vector<unsigned>::size_type>(i - 1)]}),
+                  expected);
 
         verify_token(tokens, i++, token_i::EQUAL, source);
         verify_token(tokens, i++, token_i::NUM_LITERAL, source);
@@ -595,7 +680,7 @@ TEST_F(LexerTest, Array)
     lexer = create_lexer(source);
     const auto tokens = tokenize(lexer);
 
-    std::vector<unsigned>::size_type i = 0;  // Using iterative index
+    std::vector<unsigned>::size_type i = 0; // Using iterative index
 
     EXPECT_EQ(tokens->types[i++], token_i::VAR);
     EXPECT_EQ(tokens->types[i++], token_i::IDENTIFIER);

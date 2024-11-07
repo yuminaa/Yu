@@ -20,12 +20,12 @@ The parameters of `MOCK_METHOD` mirror the method declaration. The optional
 fourth parameter *`specs...`* is a comma-separated list of qualifiers. The
 following qualifiers are accepted:
 
-| Qualifier                  | Meaning                                      |
-| -------------------------- | -------------------------------------------- |
-| `const`                    | Makes the mocked method a `const` method. Required if overriding a `const` method. |
-| `override`                 | Marks the method with `override`. Recommended if overriding a `virtual` method. |
-| `noexcept`                 | Marks the method with `noexcept`. Required if overriding a `noexcept` method. |
-| `Calltype(`*`calltype`*`)` | Sets the call type for the method, for example `Calltype(STDMETHODCALLTYPE)`. Useful on Windows. |
+| Qualifier                  | Meaning                                                                                                                                                 |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `const`                    | Makes the mocked method a `const` method. Required if overriding a `const` method.                                                                      |
+| `override`                 | Marks the method with `override`. Recommended if overriding a `virtual` method.                                                                         |
+| `noexcept`                 | Marks the method with `noexcept`. Required if overriding a `noexcept` method.                                                                           |
+| `Calltype(`*`calltype`*`)` | Sets the call type for the method, for example `Calltype(STDMETHODCALLTYPE)`. Useful on Windows.                                                        |
 | `ref(`*`qualifier`*`)`     | Marks the method with the given reference qualifier, for example `ref(&)` or `ref(&&)`. Required if overriding a method that has a reference qualifier. |
 
 Note that commas in arguments prevent `MOCK_METHOD` from parsing the arguments
@@ -127,23 +127,23 @@ Specifies how many times the mock function call is expected.
 The parameter *`cardinality`* represents the number of expected calls and can be
 one of the following, all defined in the `::testing` namespace:
 
-| Cardinality         | Meaning                                             |
-| ------------------- | --------------------------------------------------- |
-| `AnyNumber()`       | The function can be called any number of times.     |
-| `AtLeast(n)`        | The function call is expected at least *n* times.   |
-| `AtMost(n)`         | The function call is expected at most *n* times.    |
-| `Between(m, n)`     | The function call is expected between *m* and *n* times, inclusive. |
+| Cardinality         | Meaning                                                                                     |
+|---------------------|---------------------------------------------------------------------------------------------|
+| `AnyNumber()`       | The function can be called any number of times.                                             |
+| `AtLeast(n)`        | The function call is expected at least *n* times.                                           |
+| `AtMost(n)`         | The function call is expected at most *n* times.                                            |
+| `Between(m, n)`     | The function call is expected between *m* and *n* times, inclusive.                         |
 | `Exactly(n)` or `n` | The function call is expected exactly *n* times. If *n* is 0, the call should never happen. |
 
 If the `Times` clause is omitted, GoogleTest infers the cardinality as follows:
 
-*   If neither [`WillOnce`](#EXPECT_CALL.WillOnce) nor
-    [`WillRepeatedly`](#EXPECT_CALL.WillRepeatedly) are specified, the inferred
-    cardinality is `Times(1)`.
-*   If there are *n* `WillOnce` clauses and no `WillRepeatedly` clause, where
-    *n* >= 1, the inferred cardinality is `Times(n)`.
-*   If there are *n* `WillOnce` clauses and one `WillRepeatedly` clause, where
-    *n* >= 0, the inferred cardinality is `Times(AtLeast(n))`.
+* If neither [`WillOnce`](#EXPECT_CALL.WillOnce) nor
+  [`WillRepeatedly`](#EXPECT_CALL.WillRepeatedly) are specified, the inferred
+  cardinality is `Times(1)`.
+* If there are *n* `WillOnce` clauses and no `WillRepeatedly` clause, where
+  *n* >= 1, the inferred cardinality is `Times(n)`.
+* If there are *n* `WillOnce` clauses and one `WillRepeatedly` clause, where
+  *n* >= 0, the inferred cardinality is `Times(AtLeast(n))`.
 
 The `Times` clause can be used at most once on an expectation.
 

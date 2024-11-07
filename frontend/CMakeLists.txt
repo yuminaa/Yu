@@ -1,6 +1,11 @@
 set(FRONTEND_SOURCES
+        include/lexer.h
         src/lexer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../yu/src/tokens.cpp
+        ../common/bt.hpp
+        include/parser.h
+        src/parser.cpp
+        src/token_matching.cpp
 )
 
 add_library(yu-frontend STATIC ${FRONTEND_SOURCES})
@@ -30,4 +35,4 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
             c++
             c++abi
     )
-endif()
+endif ()
